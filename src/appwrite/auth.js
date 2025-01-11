@@ -1,4 +1,4 @@
-import config from "../config/config";
+import conf from "../conf/conf";
 import { Client, Account, ID } from "appwrite";
 
 export class AuthServise {
@@ -6,8 +6,8 @@ export class AuthServise {
   account;
   constructor() {
     this.client
-      .setEndpoint(config.appwriteUrl)
-      .setProject(config.appwriteProjectId)
+      .setEndpoint(conf.appwriteUrl)
+      .setProject(conf.appwriteProjectId)
     this.Account = new Account(this.client);
   }
 
@@ -16,6 +16,7 @@ export class AuthServise {
       const userAccount = await this.account.create(ID.unique(), email, password, name);
       if (userAccount) {
         // return userAccount;
+        return this.login({ email, password });
       } else {
         return userAccount;
       }
@@ -46,7 +47,7 @@ export class AuthServise {
     try {
       return await this.account.deleteSessions('current');
     } catch (error) {
-      console.error("LogOut Errr: ", error);
+      console.error("Appwrite LogOut Errr: ", error);
     }
   }
 }
